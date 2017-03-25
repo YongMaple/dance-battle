@@ -33,38 +33,39 @@ import Boss from '../../components/boss/index.vue'
 import { mapActions, mapGetters } from 'vuex'
 import { post } from '../../services/index.js'
 export default {
-    data() {
+    data () {
         return {
-            countdown: 3, //倒计时
-            score: 0, //分数
-            check: true, //重复校验
-            hp: 100, //生命值
-            combo: 0, //连击
-            omitCheck: false, //遗漏校验
-            username: '', //用户名
-            actionNum: 0 //动作对应keyCode
+            countdown: 3, // 倒计时
+            score: 0, // 分数
+            check: true, // 重复校验
+            hp: 100, // 生命值
+            combo: 0, // 连击
+            omitCheck: false, // 遗漏校验
+            username: '', // 用户名
+            actionNum: 0 // 动作对应keyCode
         }
     },
-    mounted() {
+    mounted () {
         document.onkeydown = (e) => {
-            let keyCode = e.keyCode
-            if (this.countdown == -1 && [37, 38, 39, 40].includes(keyCode) && !this.gameover) {
+            const keyCode = e.keyCode
+            if (this.countdown === -1 && [37, 38, 39, 40].includes(keyCode) && !this.gameover) {
                 this.actionNum = keyCode
-                if (keyCode == this.bossAction && this.check) {
+                if (keyCode === this.bossAction && this.check) {
                     this.check = false
                     this.omitCheck = false
                     this.combo++
-                        if (this.combo > 10)
-                            this.score += 200
-                    else
+                    if (this.combo > 10) {
+                        this.score += 200
+                    } else {
                         this.score += 100
-                } else if (keyCode != this.bossAction) {
+                    }
+                } else if (keyCode !== this.bossAction) {
                     this.hp -= 10
                     this.combo = 0
                 }
             }
         }
-        let id = setInterval(() => {
+        const id = setInterval(() => {
             this.countdown--
         }, 1000)
         setTimeout(() => {
@@ -75,27 +76,26 @@ export default {
         ...mapActions([
             'SET_GAMEOVER'
         ]),
-        submit() {
+        submit () {
             if (!this.username) {
-                alert("啥都没填你点了干嘛？")
+                alert('啥都没填你点了干嘛？')
             } else {
-                console.log(this.username);
-                let parms = {
+                console.log(this.username)
+                const parms = {
                     name: this.username,
                     score: this.score
                 }
                 post('http://10.6.96.190:3000/ranklist', parms).then(() => {
-                    alert("添加成功")
+                    alert('添加成功')
                     this.$router.push({
                         name: 'rankList'
                     })
                 })
             }
-
         }
     },
     watch: {
-        bossAction() {
+        bossAction () {
             if (this.omitCheck) {
                 this.omitCheck = true
                 this.combo = 0
@@ -104,9 +104,10 @@ export default {
             this.omitCheck = true
             this.check = true
         },
-        hp() {
-            if (this.hp == 0)
+        hp () {
+            if (this.hp === 0) {
                 this.SET_GAMEOVER(true)
+            }
         }
     },
     computed: {

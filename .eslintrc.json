@@ -1,0 +1,11 @@
+{
+  "extends": ["vue"],
+  "plugins": ["vue"],
+  "rules": {
+      "vue/jsx-uses-vars": 2,
+      "indent": ["error", 4]
+  },
+  "globals": {
+        "alert": false
+    }
+}
